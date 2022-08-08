@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from './components/Login'
+import Notification from './components/Notification'
+import Users from './components/Users'
+import Bar from './components/Bar'
 
-function App() {
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeLoggedUser } from './reducers/loginReducer'
+
+import { Routes, Route } from 'react-router-dom'
+
+import { Container } from '@mui/material'
+
+const App = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeLoggedUser())
+  }, [dispatch])
+
+  const loggedUser = useSelector((state) => state.login)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Container>
+      {loggedUser ? (
+        <>
+          <Bar />
+          <Notification />
+          <Routes>
+            <Route path="/" element={<Users />} />
+          </Routes>
+        </>
+      ) : (
+        <>
+          <Notification />
+          <Login />
+        </>
+      )}
+    </Container>
+  )
 }
 
-export default App;
+export default App
