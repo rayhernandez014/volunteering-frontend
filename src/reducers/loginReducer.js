@@ -48,17 +48,17 @@ export const logout = () => {
     const { login } = getState()
     try{
       await logoutService.logout()
-      window.localStorage.removeItem('loggedVolunteeringAppUser')
       dispatch(
         callNotification(`${login.name} has logged out!`, 'success', 5)
       )
-      userService.setToken(null)
-      logoutService.setToken(null)
-      dispatch(setUser(null))
     }
     catch (exception) {
       dispatch(callNotification(exception.response.data.error, 'error', 5))
     }
+    window.localStorage.removeItem('loggedVolunteeringAppUser')
+    userService.setToken(null)
+    logoutService.setToken(null)
+    dispatch(setUser(null))
   }
 }
 
