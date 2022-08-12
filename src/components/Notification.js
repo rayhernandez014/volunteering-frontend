@@ -1,15 +1,19 @@
 import Alert from '@mui/material/Alert'
 import { useSelector } from 'react-redux'
+import Snackbar from '@mui/material/Snackbar'
 
 const Notification = () => {
 
-  const { message, type } = useSelector((state) => state.notification)
+  const { message, type, show } = useSelector((state) => state.notification)
 
-  if (!message || !type) {
-    return null
-  } else {
-    return <Alert severity={type}>{message}</Alert>
-  }
+  return (
+
+    <Snackbar open={show} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <Alert severity={type}> {message} </Alert>
+    </Snackbar>
+
+  )
+
 }
 
 export default Notification

@@ -1,5 +1,4 @@
 import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -11,19 +10,17 @@ const Bar = () => {
   const loggedUser = useSelector( (state) => state.login )
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h5" component="h5" sx={{ flexGrow: 1 }}>
+    <AppBar position="fixed">
+      <Toolbar>
+        <Typography variant="h5" component="h5" sx={{ flexGrow: 1 }}>
               Volunteering App
-          </Typography>
-          <Typography variant="body1" component="span" sx={{ mx: 2 }}>
-            {`${loggedUser.name} is logged in`}
-          </Typography>
-          <Button color="inherit" onClick={() => dispatch(logout())} id="logout-button">Log out</Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
+        </Typography>
+        <Typography variant="body1" component="span" sx={{ mx: 2 }}>
+          {`${loggedUser.name} is logged in`}
+        </Typography>
+        <Button color="inherit" onClick={() => dispatch(logout())} id="logout-button">Log out</Button>
+      </Toolbar>
+    </AppBar>
   )
 }
 
