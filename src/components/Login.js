@@ -61,7 +61,7 @@ const Login = () => {
         <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
           Sign in
         </Button>
-        <Link component={ RouterLink } to="/register">Do not have an account? Sign up</Link>
+        <Link component={ RouterLink } to="/register" underline="hover">Do not have an account? Sign up</Link>
       </Box>
     </Box>
   )

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import logoutService from '../services/logout'
 import userService from '../services/users'
+import eventService from '../services/events'
 import { callNotification } from './notificationReducer'
 import { initializeUsers } from './userReducer'
 
@@ -32,6 +33,7 @@ export const login = (credentials) => {
       )
       userService.setToken(receivedUser.token)
       logoutService.setToken(receivedUser.token)
+      eventService.setToken(receivedUser.token)
       dispatch(initializeUsers())
       dispatch(setUser(receivedUser))
       dispatch(
@@ -58,6 +60,7 @@ export const logout = () => {
     window.localStorage.removeItem('loggedVolunteeringAppUser')
     userService.setToken(null)
     logoutService.setToken(null)
+    eventService.setToken(null)
     dispatch(setUser(null))
   }
 }
@@ -69,7 +72,7 @@ export const initializeLoggedUser = () => {
       const storedUser = JSON.parse(loggedUserJSON)
       userService.setToken(storedUser.token)
       logoutService.setToken(storedUser.token)
-      dispatch(initializeUsers())
+      eventService.setToken(storedUser.token)
       dispatch(setUser(storedUser))
     }
   }

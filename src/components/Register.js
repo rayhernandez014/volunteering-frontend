@@ -86,7 +86,7 @@ const Register = () => {
         <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
           Sign up
         </Button>
-        <Link component={ RouterLink } to="/">Already have an account? Sign in</Link>
+        <Link component={ RouterLink } to="/login" underline="hover">Already have an account? Sign in</Link>
       </Box>
     </Box>
   )
