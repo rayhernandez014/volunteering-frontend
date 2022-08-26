@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { switchRSVP } from '../reducers/eventReducer'
 import { Link as RouterLink } from 'react-router-dom'
 
+import { setOpen } from '../reducers/confirmationReducer'
+
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -14,6 +16,7 @@ import CardHeader from '@mui/material/CardHeader'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Link from '@mui/material/Link'
+import Toolbar from '@mui/material/Toolbar'
 
 const Events = () => {
 
@@ -23,11 +26,21 @@ const Events = () => {
   const loggedUser = useSelector((state) => state.login)
 
   const rsvp = (id) => {
-    dispatch(switchRSVP(id))
+    if (loggedUser){
+      dispatch(switchRSVP(id))
+    }
+    else{
+      dispatch(setOpen(true))
+    }
   }
 
   const isGoing = (volunteers) => {
     return volunteers.find((v) => v.email === loggedUser?.email)
+  }
+
+  const getDate = (dateString) => {
+    const dateObject = new Date(dateString)
+    return dateObject.toDateString()
   }
 
   if (!events) {
@@ -35,10 +48,14 @@ const Events = () => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, margin: 10 }}>
+    <Box
+      component="main"
+      sx={{ flexGrow: 1, p: 3, width: { sm: 'calc(100% - 240px)' } }}
+    >
+      <Toolbar />
       <Grid container spacing={2}>
         {events.map((event) => (
-          <Grid item xs={4} key={event.id}>
+          <Grid item md={4} xs={12} key={event.id}>
             <Card sx={{
               bgcolor: isGoing(event.volunteers) ? 'primary.light' : 'background.paper'
             }}>
@@ -61,8 +78,7 @@ const Events = () => {
               <CardMedia
                 component="img"
                 alt="green iguana"
-                image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-
+                image="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
                 sx={{
                   height: 140,
                   mx: '3%',
@@ -71,16 +87,16 @@ const Events = () => {
                 }}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h5">
+                <Typography gutterBottom noWrap variant="h5" component="h5">
                   <b>{event.title}</b>
                 </Typography>
-                <Typography gutterBottom variant="body1" paragraph color="primary">
-                  {`${event.startDate} to ${event.endDate}`}
+                <Typography gutterBottom noWrap variant="body1" paragraph color="primary">
+                  {`${getDate(event.startDate)} to ${getDate(event.endDate)}`}
                 </Typography>
-                <Typography gutterBottom variant="body1" paragraph>
+                <Typography gutterBottom noWrap variant="body1" paragraph>
                   {`${event.latitude} , ${event.longitude}`}
                 </Typography>
-                <Typography gutterBottom variant="body1" paragraph color="text.secondary">
+                <Typography gutterBottom noWrap variant="body1" paragraph color="text.secondary">
                   {event.description}
                 </Typography>
                 <Link component={ RouterLink } to={`/events/${event.id}`} underline="hover">Read More...</Link>

@@ -1,17 +1,17 @@
 import Login from './components/Login'
 import Notification from './components/Notification'
-import Events from './components/Events'
-import Bar from './components/Bar'
 import Event from './components/Event'
 import EventForm from './components/EventForm'
 import Register from './components/Register'
+import Home from './components/Home'
+import Confirmation from './components/Confirmation'
 
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initializeLoggedUser } from './reducers/loginReducer'
 import { initializeEvents } from './reducers/eventReducer'
 
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Container from '@mui/material/Container'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -25,6 +25,8 @@ const App = () => {
     dispatch(initializeLoggedUser())
     dispatch(initializeEvents())
   }, [dispatch])
+
+  const loggedUser = useSelector((state) => state.login)
 
   const theme = createTheme({
     palette: {
@@ -43,12 +45,12 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Container maxWidth={false} disableGutters={true}>
         <CssBaseline />
-        <Bar />
         <Notification />
+        <Confirmation />
         <Routes>
-          <Route path="/" element={<Events/>} />
+          <Route path="/" element={<Home/>} />
           <Route path="/events/:id" element={<Event/>} />
-          <Route path="/eventform" element={<EventForm/>} />
+          <Route path="/eventform" element={loggedUser ? <EventForm/> : <Navigate replace to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
