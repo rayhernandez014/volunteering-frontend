@@ -6,6 +6,8 @@ import userReducer from './reducers/userReducer'
 import eventReducer from './reducers/eventReducer'
 import mobileReducer from './reducers/mobileReducer'
 import confirmationReducer from './reducers/confirmationReducer'
+import calendarReducer from './reducers/calendarReducer'
+import mapReducer from './reducers/mapReducer'
 
 const store = configureStore({
   reducer: {
@@ -14,7 +16,9 @@ const store = configureStore({
     user: userReducer,
     event: eventReducer,
     mobile: mobileReducer,
-    confirmation: confirmationReducer
+    confirmation: confirmationReducer,
+    calendar: calendarReducer,
+    map: mapReducer
   }
 })
 

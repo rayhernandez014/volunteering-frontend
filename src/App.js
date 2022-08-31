@@ -26,7 +26,7 @@ const App = () => {
     dispatch(initializeEvents())
   }, [dispatch])
 
-  const loggedUser = useSelector((state) => state.login)
+  const loggedUser = useSelector ((state) => state.login)
 
   const theme = createTheme({
     palette: {
@@ -50,9 +50,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/events/:id" element={<Event/>} />
-          <Route path="/eventform" element={loggedUser ? <EventForm/> : <Navigate replace to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/eventform" element={ <EventForm />} />
+          <Route path="/login" element={!loggedUser ? <Login /> : <Navigate replace to="/" />} />
+          <Route path="/register" element={!loggedUser ? <Register /> : <Navigate replace to="/" />} />
         </Routes>
       </Container>
     </ThemeProvider>

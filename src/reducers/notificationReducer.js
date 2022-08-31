@@ -17,9 +17,7 @@ const notificationSlice = createSlice({
       return action.payload
     },
     removeNotification(state) {
-      const newState = { ...state }
-      newState.show = false
-      return newState
+      return { ...state, show: false }
     }
   }
 })

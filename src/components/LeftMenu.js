@@ -2,8 +2,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setMobile } from '../reducers/mobileReducer'
 import { useNavigate } from 'react-router-dom'
 
-import { setOpen } from '../reducers/confirmationReducer'
-
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
@@ -15,7 +13,6 @@ const drawerWidth = 240
 
 const LeftMenu = () => {
   const mobileOpen = useSelector( (state) => state.mobile)
-  const loggedUser = useSelector((state) => state.login)
 
   const dispatch = useDispatch()
 
@@ -26,13 +23,7 @@ const LeftMenu = () => {
   }
 
   const handleCreateButton = () => {
-    if (loggedUser) {
-      navigate('/eventform')
-    }
-    else{
-      dispatch(setOpen(true))
-    }
-
+    navigate('/eventform')
   }
 
   const drawer = (
