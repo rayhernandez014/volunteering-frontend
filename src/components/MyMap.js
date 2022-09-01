@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapControl from './MapControl'
 import ChangeView from './ChangeView'
+import '../../node_modules/leaflet-geosearch/dist/geosearch.css'
 
 import { useSelector } from 'react-redux'
 
