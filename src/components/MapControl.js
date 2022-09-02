@@ -6,7 +6,7 @@ import { useMap } from 'react-leaflet'
 
 import { useDispatch } from 'react-redux'
 
-import { setLocation } from '../reducers/mapReducer'
+import { setCoordinates, setAddress } from '../reducers/mapReducer'
 
 const provider = new OpenStreetMapProvider()
 
@@ -18,27 +18,19 @@ const MapControl = () => {
 
   const handleOptionSelection = (result) => {
     const coordinates = [result.location.y, result.location.x]
-    dispatch(setLocation(coordinates))
-  }
-
-  const handleDragMarker = (result) => {
-    const coordinates = [result.location.lat, result.location.lng]
-    dispatch(setLocation(coordinates))
+    const address = result.location.label
+    dispatch(setCoordinates(coordinates))
+    dispatch(setAddress(address))
   }
 
   const searchControl = new GeoSearchControl({
     provider: provider,
-    keepResult: true,
-    marker: {
-      draggable: true
-    }
+    keepResult: true
   })
 
   useEffect(() => {
     map.addControl(searchControl)
     map.on('geosearch/showlocation', handleOptionSelection)
-    map.on('geosearch/marker/dragend', handleDragMarker)
-
     return () => map.removeControl(searchControl)
   }, [])
 
