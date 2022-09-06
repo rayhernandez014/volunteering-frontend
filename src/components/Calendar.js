@@ -2,13 +2,15 @@ import TextField from '@mui/material/TextField'
 
 import { useDispatch } from 'react-redux'
 
+import { setEvent } from '../reducers/eventFormReducer'
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 import Box from '@mui/material/Box'
 
-const Calendar = ({ label, setValue, value }) => {
+const Calendar = ({ label, value, name }) => {
 
   const dispatch = useDispatch()
 
@@ -19,8 +21,11 @@ const Calendar = ({ label, setValue, value }) => {
           renderInput={(props) => <TextField {...props} />}
           label={label}
           value={value}
+          name={name}
           onChange={(newValue) => {
-            dispatch(setValue(newValue.toJSON()))
+            dispatch(setEvent({
+              [name]: newValue.toJSON()
+            }))
           }}
         />
       </LocalizationProvider>

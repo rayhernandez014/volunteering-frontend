@@ -6,8 +6,7 @@ import userReducer from './reducers/userReducer'
 import eventReducer from './reducers/eventReducer'
 import mobileReducer from './reducers/mobileReducer'
 import confirmationReducer from './reducers/confirmationReducer'
-import calendarReducer from './reducers/calendarReducer'
-import mapReducer from './reducers/mapReducer'
+import eventFormReducer from './reducers/eventFormReducer'
 
 const store = configureStore({
   reducer: {
@@ -17,8 +16,7 @@ const store = configureStore({
     event: eventReducer,
     mobile: mobileReducer,
     confirmation: confirmationReducer,
-    calendar: calendarReducer,
-    map: mapReducer
+    eventForm: eventFormReducer
   }
 })
 

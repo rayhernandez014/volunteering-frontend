@@ -18,6 +18,11 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Link from '@mui/material/Link'
 import Toolbar from '@mui/material/Toolbar'
 
+import { AdvancedImage } from '@cloudinary/react'
+import { Cloudinary } from '@cloudinary/url-gen'
+import { fill } from '@cloudinary/url-gen/actions/resize'
+
+
 const Events = () => {
 
   const dispatch = useDispatch()
@@ -41,6 +46,18 @@ const Events = () => {
   const getDate = (dateString) => {
     const dateObject = new Date(dateString)
     return dateObject.toDateString()
+  }
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: 'dhfcmzg6o'
+    }
+  })
+
+  const getImgObj = (public_id) => {
+    const imgObj = cld.image(public_id)
+    imgObj.resize(fill().height(140))
+    return imgObj
   }
 
   if (!events) {
@@ -76,9 +93,8 @@ const Events = () => {
                 }}
               />
               <CardMedia
-                component="img"
-                alt="green iguana"
-                image="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
+                component={ AdvancedImage }
+                cldImg={getImgObj(event.image)}
                 sx={{
                   height: 140,
                   mx: '3%',

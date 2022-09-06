@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { setOpen } from '../reducers/confirmationReducer'
 
-import { setStartDate, setEndDate, resetDates } from '../reducers/calendarReducer'
+import { resetEventForm, setEvent } from '../reducers/eventFormReducer'
 
 import Calendar from './Calendar'
 import MyMap from './MyMap'
@@ -19,40 +19,48 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
 import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
-import Autocomplete from '@mui/material/Autocomplete'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import Skeleton from '@mui/material/Skeleton'
 
 const EventForm = () => {
 
   const dispatch = useDispatch()
-  const selectedDate = useSelector( (state) => state.calendar )
   const loggedUser = useSelector((state) => state.login)
+  const eventFormState = useSelector ( (state) => state.eventForm)
 
   const navigate = useNavigate()
+
+  const handleInputChange = (event) => {
+    const target = event.target
+    const name = target.name
+    const value = target.value
+
+    dispatch(setEvent({
+      [name]: value
+    }))
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      dispatch(setEvent({
+        image: reader.result
+      }))
+    }
+  }
 
   const handleEventCreation = (event) => {
     event.preventDefault()
 
     if (loggedUser) {
 
-      const newEvent = {
-        title: event.target.title.value,
-        description: event.target.description.value,
-        latitude: event.target.latitude.value,
-        longitude: event.target.longitude.value,
-        category: event.target.category.value,
-        spots: event.target.spots.value,
-        startDate: selectedDate.startDate,
-        endDate: selectedDate.endDate
-      }
-      dispatch(createEvent(newEvent))
-      event.target.title.value = ''
-      event.target.description.value = ''
-      event.target.latitude.value = ''
-      event.target.longitude.value = ''
-      event.target.category.value = ''
-      event.target.spots.value = ''
-      dispatch(resetDates())
-
+      dispatch(createEvent(eventFormState))
+      dispatch(resetEventForm())
     }
 
     else{
@@ -75,6 +83,7 @@ const EventForm = () => {
           <b>Create a Volunteer Opportunity</b>
         </Typography>
         <Box component="form" onSubmit={handleEventCreation} noValidate sx={{ mt: 1 }}>
+
           <TextField
             margin="normal"
             required
@@ -85,6 +94,8 @@ const EventForm = () => {
             name="title"
             autoComplete="title"
             autoFocus
+            value={eventFormState.title}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
@@ -97,30 +108,36 @@ const EventForm = () => {
             autoFocus
             multiline
             minRows={10}
+            value={eventFormState.description}
+            onChange={handleInputChange}
           />
           <Typography gutterBottom noWrap variant="body1" paragraph color="text.secondary" sx={{ mt: '16px' }}>
             Upload an image
           </Typography>
           <ImageList sx={{ height: 450 }} cols={1}>
             <ImageListItem >
-              <img
-                src={'https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg'}
-                srcSet={''}
-                alt={'uploaded image'}
-                loading="lazy"
-              />
+              {
+                eventFormState.image ? (
+                  <img
+                    alt={'uploaded image'}
+                    src={eventFormState.image}
+                  />
+                ) : (
+                  <Skeleton variant="rectangular" height={450} />
+                )
+              }
             </ImageListItem>
           </ImageList>
           <Button variant="outlined" component="label" endIcon={<AddAPhotoIcon />} sx={{ borderRadius: 4, border: 2, mb: '8px' }}>
                   Upload
-            <input hidden accept="image/*" multiple type="file" />
+            <input hidden accept="image/*" type="file" onChange={handleImageChange} name="image"/>
           </Button>
           <Typography gutterBottom noWrap variant="body1" paragraph color="text.secondary" sx={{ mt: '16px' }}>
             Date and time
           </Typography>
           <Box>
-            <Calendar label='Start Date' value={selectedDate.startDate} setValue={setStartDate} />
-            <Calendar label='End Date' value={selectedDate.endDate} setValue={setEndDate} />
+            <Calendar label='Start Date' name="startDate" value={eventFormState.startDate}/>
+            <Calendar label='End Date' name="endDate" value={eventFormState.endDate}/>
           </Box>
           <TextField
             required
@@ -128,22 +145,31 @@ const EventForm = () => {
             type="number"
             id="spots"
             name="spots"
-            autoComplete="spots"
-            autoFocus
             sx = {{ mt: '16px' }}
+            value={eventFormState.spots}
+            onChange={handleInputChange}
           />
-          <Autocomplete
-            disablePortal
-            id="category"
-            options={['option1', 'option2']}
-            sx={{ width: 300, mt: '16px', mb: '16px' }}
-            renderInput={(params) => <TextField {...params} label="Category" />}
-          />
+          <br />
+          <FormControl sx = {{ mt: '16px', minWidth: 120 }}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="category"
+              label="Category"
+              value={eventFormState.category}
+              onChange={handleInputChange}
+              name="category"
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
           <MyMap />
+          <Button variant="outlined" sx={{ flexGrow: 1, marginBottom: '1%', borderRadius: 4,  border: 2, width: 289, my:2 }} type="submit">
+            Submit
+          </Button>
         </Box>
-        <Button variant="outlined" sx={{ flexGrow: 1, marginBottom: '1%', borderRadius: 4,  border: 2, width: 289, my:2 }} type="submit">
-          Submit
-        </Button>
       </Container>
     </>
   )

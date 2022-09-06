@@ -6,7 +6,7 @@ import { useMap } from 'react-leaflet'
 
 import { useDispatch } from 'react-redux'
 
-import { setCoordinates, setAddress } from '../reducers/mapReducer'
+import { setLocationInfo } from '../reducers/eventFormReducer'
 
 const provider = new OpenStreetMapProvider()
 
@@ -17,10 +17,14 @@ const MapControl = () => {
   const map = useMap()
 
   const handleOptionSelection = (result) => {
-    const coordinates = [result.location.y, result.location.x]
-    const address = result.location.label
-    dispatch(setCoordinates(coordinates))
-    dispatch(setAddress(address))
+    const locationInfo = {
+      latitude: result.location.y,
+      longitude: result.location.x,
+      address: result.location.label
+    }
+
+    dispatch(setLocationInfo(locationInfo))
+
   }
 
   const searchControl = new GeoSearchControl({
