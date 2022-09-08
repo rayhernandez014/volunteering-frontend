@@ -9,7 +9,6 @@ import Confirmation from './components/Confirmation'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeLoggedUser } from './reducers/loginReducer'
-import { initializeEvents } from './reducers/eventReducer'
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 
@@ -23,7 +22,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeLoggedUser())
-    dispatch(initializeEvents())
   }, [dispatch])
 
   const loggedUser = useSelector ((state) => state.login)

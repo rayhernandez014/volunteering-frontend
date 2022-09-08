@@ -29,7 +29,9 @@ const MapControl = () => {
 
   const searchControl = new GeoSearchControl({
     provider: provider,
-    keepResult: true
+    keepResult: true,
+    style: 'bar',
+    notFoundMessage: 'Sorry, that address could not be found.'
   })
 
   useEffect(() => {

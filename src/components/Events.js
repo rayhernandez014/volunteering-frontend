@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { switchRSVP } from '../reducers/eventReducer'
+import { setCurrentLocation, switchRSVP, setZoom } from '../reducers/eventReducer'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { setOpen } from '../reducers/confirmationReducer'
@@ -10,7 +10,8 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import CardHeader from '@mui/material/CardHeader'
 import Avatar from '@mui/material/Avatar'
@@ -21,13 +22,15 @@ import Toolbar from '@mui/material/Toolbar'
 import { AdvancedImage } from '@cloudinary/react'
 import { Cloudinary } from '@cloudinary/url-gen'
 import { fill } from '@cloudinary/url-gen/actions/resize'
-
+import Skeleton from '@mui/material/Skeleton'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import IconButton from '@mui/material/IconButton'
 
 const Events = () => {
 
   const dispatch = useDispatch()
 
-  const events = useSelector((state) => state.event)
+  const { events } = useSelector((state) => state.event)
   const loggedUser = useSelector((state) => state.login)
 
   const rsvp = (id) => {
@@ -46,6 +49,11 @@ const Events = () => {
   const getDate = (dateString) => {
     const dateObject = new Date(dateString)
     return dateObject.toDateString()
+  }
+
+  const handleLocateButton = (event) => {
+    dispatch(setCurrentLocation({ latitude: event.latitude, longitude: event.longitude }))
+    dispatch(setZoom(15))
   }
 
   const cld = new Cloudinary({
@@ -67,15 +75,16 @@ const Events = () => {
   return (
     <Box
       component="main"
-      sx={{ flexGrow: 1, p: 3, width: { sm: 'calc(100% - 240px)' } }}
+      sx={{ flexGrow: 1, width: '100%' }}
     >
       <Toolbar />
-      <Grid container spacing={2}>
+      <List sx={{ overflow: 'auto', width: '100%', height: '93vh' }}>
         {events.map((event) => (
-          <Grid item md={4} xs={12} key={event.id}>
+          <ListItem key={event.id} sx={{ paddingRight:'2px' }}>
             <Card sx={{
-              bgcolor: isGoing(event.volunteers) ? 'primary.light' : 'background.paper'
-            }}>
+              bgcolor: isGoing(event.volunteers) ? 'primary.light' : 'background.paper',
+              width: '100%',
+            }} elevation={3}>
               <CardHeader
                 avatar={ event.volunteers.length ?
                   <AvatarGroup max={4}>
@@ -92,16 +101,24 @@ const Events = () => {
                   minHeight: 76
                 }}
               />
-              <CardMedia
-                component={ AdvancedImage }
-                cldImg={getImgObj(event.image)}
-                sx={{
+              {event.image ? (
+                <CardMedia component={ AdvancedImage } cldImg={getImgObj(event.image)} sx={{
                   height: 140,
                   mx: '3%',
                   width: '94%',
                   borderRadius: 3
                 }}
-              />
+                />
+              ) : (
+                <CardMedia component={ Skeleton } sx={{
+                  height: 140,
+                  mx: '3%',
+                  width: '94%',
+                  borderRadius: 3
+                }}
+                />
+              )}
+
               <CardContent>
                 <Typography gutterBottom noWrap variant="h5" component="h5">
                   <b>{event.title}</b>
@@ -109,9 +126,9 @@ const Events = () => {
                 <Typography gutterBottom noWrap variant="body1" paragraph color="primary">
                   {`${getDate(event.startDate)} to ${getDate(event.endDate)}`}
                 </Typography>
-                <Typography gutterBottom noWrap variant="body1" paragraph>
-                  {`${event.latitude} , ${event.longitude}`}
-                </Typography>
+                <IconButton color="primary" aria-label="Locate" onClick={() => handleLocateButton(event)}>
+                  <LocationOnIcon />
+                </IconButton>
                 <Typography gutterBottom noWrap variant="body1" paragraph color="text.secondary">
                   {event.description}
                 </Typography>
@@ -121,9 +138,9 @@ const Events = () => {
                 <Button variant="outlined" sx={{ flexGrow: 1, mx: '1%', marginBottom: '1%', borderRadius: 4,  border: 2 }} onClick={() => {rsvp(event.id)}}> {isGoing(event.volunteers) ? 'Going' : 'RSVP'} </Button>
               </CardActions>
             </Card>
-          </Grid>
+          </ListItem>
         ))}
-      </Grid>
+      </List>
     </Box>
   )
 }

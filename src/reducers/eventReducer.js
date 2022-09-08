@@ -4,32 +4,51 @@ import { callNotification } from './notificationReducer'
 
 const eventSlice = createSlice({
   name: 'event',
-  initialState: null,
+  initialState: {
+    events: null,
+    bounds: null,
+    currentLocation: {
+      latitude: 20,
+      longitude: 20
+    },
+    zoom: 8
+  },
   reducers: {
     replaceEvent(state, action) {
       const returnedEvent = action.payload.returnedEvent
       const id = action.payload.id
-      return state.map((event) => (event.id !== id ? event : returnedEvent))
+      const modifiedEventList = state.events.map((event) => (event.id !== id ? event : returnedEvent))
+      return { ...state, events: modifiedEventList }
     },
     setEvents(state, action) {
-      return action.payload
+      return { ...state, events: action.payload }
     },
     appendEvent(state, action) {
-      return [...state, action.payload]
+      return { ...state, events: [...state.events, action.payload] }
     },
     removeEvent(state, action) {
       const id = action.payload
-      return state.filter((e) => e.id !== id)
+      return state.events.filter((e) => e.id !== id)
+    },
+    setEventsBounds(state, action) {
+      return { ...state, bounds: action.payload }
+    },
+    setCurrentLocation(state, action) {
+      return { ...state, currentLocation: action.payload }
+    },
+    setZoom(state, action) {
+      return { ...state, zoom: action.payload }
     }
   }
 })
 
-export const { appendEvent, replaceEvent, setEvents, removeEvent } =
+export const { appendEvent, replaceEvent, setEvents, removeEvent, setEventsBounds, setCurrentLocation, setZoom } =
   eventSlice.actions
 
 export const initializeEvents = () => {
-  return async (dispatch) => {
-    const events = await eventService.getAll()
+  return async (dispatch, getState) => {
+    const { event } = getState()
+    const events = await eventService.getAll(event.bounds)
     dispatch(setEvents(events))
   }
 }
@@ -77,7 +96,7 @@ export const switchRSVP = (id) => {
 export const deleteBlog = (id) => {
   return async (dispatch, getState) => {
     const { event } = getState()
-    const foundEvent = event.find((e) => {
+    const foundEvent = event.events.find((e) => {
       return e.id === id
     })
     if (

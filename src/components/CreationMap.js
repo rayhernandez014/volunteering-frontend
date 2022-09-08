@@ -4,7 +4,7 @@ import '../../node_modules/leaflet-geosearch/dist/geosearch.css'
 
 import { useSelector } from 'react-redux'
 
-const MyMap = () => {
+const CreationMap = () => {
 
   const mapState = useSelector( (state) => state.eventForm)
   const coordinates = [mapState.latitude, mapState.longitude]
@@ -20,4 +20,4 @@ const MyMap = () => {
   )
 }
 
-export default MyMap
+export default CreationMap

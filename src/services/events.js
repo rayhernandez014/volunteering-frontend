@@ -14,8 +14,16 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
+const getAll = async (bounds) => {
+
+  const response = await axios.get(baseUrl, {
+    params: {
+      nelat: bounds.nelat,
+      nelng: bounds.nelng,
+      swlat: bounds.swlat,
+      swlng: bounds.swlng
+    }
+  })
   return response.data
 }
 

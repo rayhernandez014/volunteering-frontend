@@ -8,7 +8,7 @@ import { setOpen } from '../reducers/confirmationReducer'
 import { resetEventForm, setEvent } from '../reducers/eventFormReducer'
 
 import Calendar from './Calendar'
-import MyMap from './MyMap'
+import CreationMap from './CreationMap'
 
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -165,7 +165,7 @@ const EventForm = () => {
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
           </FormControl>
-          <MyMap />
+          <CreationMap />
           <Button variant="outlined" sx={{ flexGrow: 1, marginBottom: '1%', borderRadius: 4,  border: 2, width: 289, my:2 }} type="submit">
             Submit
           </Button>
