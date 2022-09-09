@@ -17,7 +17,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 const Event = () => {
 
   const loggedUser = useSelector ((state) => state.login)
-  const events = useSelector((state) => state.event)
+  const { events } = useSelector((state) => state.event)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
