@@ -4,7 +4,6 @@ const initialState = {
   message: '',
   type: 'info',
   show: false
-
 }
 
 let timeoutID = null

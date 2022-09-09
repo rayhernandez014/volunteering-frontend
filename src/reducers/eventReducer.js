@@ -2,17 +2,16 @@ import { createSlice } from '@reduxjs/toolkit'
 import eventService from '../services/events'
 import { callNotification } from './notificationReducer'
 
-const eventSlice = createSlice({
-  name: 'event',
-  initialState: {
-    events: null,
-    bounds: null,
-    currentLocation: {
-      latitude: 20,
-      longitude: 20
-    },
-    zoom: 8
-  },
+const initialState = {
+  events: null,
+  bounds: null,
+  currentLocation: [20,20],
+  zoom: 8
+}
+
+const eventtSlice = createSlice({
+  name: 'eventt',
+  initialState,
   reducers: {
     replaceEvent(state, action) {
       const returnedEvent = action.payload.returnedEvent
@@ -43,7 +42,7 @@ const eventSlice = createSlice({
 })
 
 export const { appendEvent, replaceEvent, setEvents, removeEvent, setEventsBounds, setCurrentLocation, setZoom } =
-  eventSlice.actions
+  eventtSlice.actions
 
 export const initializeEvents = () => {
   return async (dispatch, getState) => {
@@ -117,4 +116,4 @@ export const deleteBlog = (id) => {
   }
 }
 
-export default eventSlice.reducer
+export default eventtSlice.reducer

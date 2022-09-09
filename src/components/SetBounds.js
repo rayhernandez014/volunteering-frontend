@@ -33,7 +33,7 @@ const DisplayPosition = ({ map }) => {
   }, [map, onMove])
 
   useEffect(() => {
-    map.setView([currentLocation.latitude, currentLocation.longitude], zoom)
+    map.setView(currentLocation, zoom)
   }, [currentLocation, zoom])
 
   const fabStyleData = {

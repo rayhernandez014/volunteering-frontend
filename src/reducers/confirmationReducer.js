@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialState = false
+
 const confirmationSlice = createSlice({
   name: 'confirmation',
-  initialState: false,
+  initialState,
   reducers: {
     setOpen(state, action) {
       return action.payload

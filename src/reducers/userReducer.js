@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 import userService from '../services/users'
 import { callNotification } from './notificationReducer'
 
+const initialState = null
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: null,
+  initialState,
   reducers: {
     setUsers(state, action) {
       return action.payload

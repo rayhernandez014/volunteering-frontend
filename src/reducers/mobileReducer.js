@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialState = false
+
 const mobileSlice = createSlice({
   name: 'mobile',
-  initialState: false,
+  initialState,
   reducers: {
     setMobile(state, action) {
       return action.payload

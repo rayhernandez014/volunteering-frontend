@@ -52,7 +52,7 @@ const Events = () => {
   }
 
   const handleLocateButton = (event) => {
-    dispatch(setCurrentLocation({ latitude: event.latitude, longitude: event.longitude }))
+    dispatch(setCurrentLocation([event.latitude, event.longitude]))
     dispatch(setZoom(15))
   }
 

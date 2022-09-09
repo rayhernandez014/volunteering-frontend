@@ -6,9 +6,11 @@ import eventService from '../services/events'
 import { callNotification } from './notificationReducer'
 import { setCurrentLocation } from './eventReducer'
 
+const initialState = null
+
 const loginSlice = createSlice({
   name: 'login',
-  initialState: null,
+  initialState,
   reducers: {
     setUser(state, action) {
       return action.payload
@@ -35,7 +37,7 @@ export const login = (credentials) => {
       logoutService.setToken(receivedUser.token)
       eventService.setToken(receivedUser.token)
       dispatch(setUser(receivedUser))
-      dispatch(setCurrentLocation({ latitude: receivedUser.latitude, longitude: receivedUser.longitude }))
+      dispatch(setCurrentLocation([receivedUser.latitude, receivedUser.longitude]))
       dispatch(
         callNotification(`You logged in as ${receivedUser.name}!`, 'success', 5)
       )
@@ -74,7 +76,7 @@ export const initializeLoggedUser = () => {
       logoutService.setToken(storedUser.token)
       eventService.setToken(storedUser.token)
       dispatch(setUser(storedUser))
-      dispatch(setCurrentLocation({ latitude: storedUser.latitude, longitude: storedUser.longitude }))
+      dispatch(setCurrentLocation([storedUser.latitude, storedUser.longitude]))
     }
   }
 }

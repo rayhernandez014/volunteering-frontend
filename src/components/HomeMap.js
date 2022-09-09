@@ -18,18 +18,16 @@ const HomeMap = () => {
 
   const dispatch = useDispatch()
 
-  const coordinates = [currentLocation.latitude, currentLocation.longitude]
-
   const handleMarkerClick = (e) => {
     const { _latlng } = e.target
-    dispatch(setCurrentLocation({ latitude: _latlng.lat, longitude: _latlng.lng }))
+    dispatch(setCurrentLocation([_latlng.lat, _latlng.lng]))
     dispatch(setZoom(15))
   }
 
   const displayMap = useMemo(
     () => (
       <MapContainer
-        center={coordinates}
+        center={currentLocation}
         zoom={zoom}
         scrollWheelZoom={false}
         style={{ width:'100%', height: 'calc(100vh - 64px)' }}

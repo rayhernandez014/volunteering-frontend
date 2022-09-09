@@ -1,20 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 
+const initialState = {
+  title: '',
+  description: '',
+  latitude: 0,
+  longitude: 0,
+  address: '',
+  category: '',
+  spots: 0,
+  startDate: dayjs().toJSON(),
+  endDate: dayjs().toJSON(),
+  image: ''
+}
+
 const eventFormSlice = createSlice({
   name: 'eventForm',
-  initialState: {
-    title: '',
-    description: '',
-    latitude: 0,
-    longitude: 0,
-    address: '',
-    category: '',
-    spots: 0,
-    startDate: dayjs().toJSON(),
-    endDate: dayjs().toJSON(),
-    image: ''
-  },
+  initialState,
   reducers: {
     setEvent(state, action) {
       const key = Object.keys(action.payload)[0]
