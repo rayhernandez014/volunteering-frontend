@@ -70,7 +70,7 @@ export const logout = () => {
 export const initializeLoggedUser = () => {
   return (dispatch) => {
     const loggedUserJSON = window.localStorage.getItem('loggedVolunteeringAppUser')
-    if (loggedUserJSON && loggedUserJSON.latitude && loggedUserJSON.longitude) {
+    if (loggedUserJSON) {
       const storedUser = JSON.parse(loggedUserJSON)
       userService.setToken(storedUser.token)
       logoutService.setToken(storedUser.token)
